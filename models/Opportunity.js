@@ -24,7 +24,7 @@ const OpportunitySchema = new Schema({
     }
 });
 
-OpportunitySchema.index({ code: 1 }, { unique: true, sparse: true });
+OpportunitySchema.index({ code: 1 }, { unique: true, sparse : true });
 
 OpportunitySchema.pre("save", function (next) {
     var self = this;
