@@ -24,16 +24,16 @@ const OpportunitySchema = new Schema({
     }
 });
 
-OpportunitySchema.index({ code: 1 }, { unique: true });
+OpportunitySchema.index({ code: 1 }, { unique: true, sparse: true });
 
 OpportunitySchema.pre("save", function (next) {
     var self = this;
     
     this.constructor.count({
         industry: this.industry,
-        territory: this.territory,
-        year : this.date.getFullYear(),
-        date  : (this.date.getMonth() + 1)
+        territory: this.territory
+        /* year : this.date.getFullYear(),
+        date  : (this.date.getMonth() + 1) */
     }).exec(function(err, data) {
         if (err) {
             return next(err);
@@ -44,9 +44,7 @@ OpportunitySchema.pre("save", function (next) {
     });
 })
 
-// OpportunitySchema.methods.getIndustry = function getIndustry(cb) {
-//         return Entity.findOne({ "externalId": this.externalId }, cb);
-// }
+
 
 /* OpportunitySchema.virtual("name").get(function () {
     const month = (this.date.getMonth() + 1).toString().padStart(2, '0');
@@ -54,13 +52,6 @@ OpportunitySchema.pre("save", function (next) {
     const number = this.number.toString().padStart(5, '0');
     return year + month + '-' + this.industry + this.territory + '-' + number;
 }); */
-
-// OpcoSchema.virtual("projects", {
-//     ref: "projects",
-//     localField: "_id",
-//     foreignField: "opco",
-//     justOne: false
-// });
 
 OpportunitySchema.set('toJSON', { virtuals: true });
 
